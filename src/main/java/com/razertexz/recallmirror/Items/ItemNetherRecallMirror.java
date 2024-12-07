@@ -1,0 +1,85 @@
+package com.razertexz.recallmirror.Items;
+
+import java.util.List;
+
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraft.item.IItemPropertyGetter;
+
+public class ItemNetherRecallMirror extends Item {
+	public ItemNetherRecallMirror(String name) {
+		setTranslationKey(name).setMaxStackSize(1).setCreativeTab(CreativeTabs.TOOLS);
+		setRegistryName(name);
+        addPropertyOverride(new ResourceLocation("charged"), new IItemPropertyGetter() {
+			@Override
+            public float apply(ItemStack stack, World world, EntityLivingBase entity) {
+            	NBTTagCompound tag = stack.getTagCompound();
+            	if (tag == null || !tag.getBoolean("used")) {
+            		return 0F;
+            	} else {
+            		return 1F;
+            	}
+            }
+        });
+	}
+	
+	@Override	
+    public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag whatisthis) {
+        list.add("An upgraded version of the regular Recall Mirror.");
+        list.add("Returns you to your bed / world spawn and back to where you used it.");
+    }
+
+	@Override
+	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
+        stack.setTagCompound(new NBTTagCompound());
+	}
+
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
+
+		NBTTagCompound tag = stack.getTagCompound();
+
+		if (player.dimension != 0) {
+            player.changeDimension(0);
+		}
+
+        if (!tag.getBoolean("used")) {
+        	tag.setDouble("PosX", player.posX);
+            tag.setDouble("PosY", player.posY);
+            tag.setDouble("PosZ", player.posZ);
+
+            BlockPos target = player.getBedSpawnLocation(world, player.getBedLocation(0), player.isSpawnForced(0));
+			if (target == null) {
+	        	target = world.getSpawnPoint();
+	        }
+
+			// 15 secs cooldown
+			player.getCooldownTracker().setCooldown(this, 300);
+
+	        player.setPositionAndUpdate(target.getX() + 0.5, target.getY() + 1, target.getZ() + 0.5);
+            tag.setBoolean("used", true);
+        } else {
+        	// 30 secs cooldown
+        	player.getCooldownTracker().setCooldown(this, 600);
+
+        	player.setPositionAndUpdate(tag.getDouble("PosX"), tag.getDouble("PosY"), tag.getDouble("PosZ"));
+        	tag.setBoolean("used", false);
+        }
+
+		world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.NEUTRAL, 1F, 1F);
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+    }
+}

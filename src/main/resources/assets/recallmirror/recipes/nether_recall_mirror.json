@@ -1,0 +1,41 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern":
+    [
+        "F#F",
+        "#G#",
+        "FHF"
+    ],
+    "key":
+    {
+        "#":
+        {
+            "item": "minecraft:blaze_rod",
+            "data": 0
+        },
+        
+        "G":
+        {
+            "item": "recallmirror:recall_mirror",
+            "data": 0
+        },
+        
+        "F":
+        {
+            "item": "minecraft:diamond",
+            "data": 0
+        },
+
+        "H":
+        {
+            "item:": "minecraft:wither_skeleton_skull",
+            "data": 0
+        }
+    },
+    
+    "result": {
+        "item": "recallmirror:nether_recall_mirror",
+        "data": 0,
+        "count": 1
+    }
+}

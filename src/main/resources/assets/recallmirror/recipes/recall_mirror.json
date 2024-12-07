@@ -1,0 +1,35 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern":
+    [
+        "F##",
+        "#G#",
+        "##F"
+    ],
+    "key":
+    {
+        "#":
+        {
+            "item": "minecraft:diamond",
+            "data": 0
+        },
+        
+        "G":
+        {
+            "item": "minecraft:golden_apple",
+            "data": 0
+        },
+
+        "F":
+        {
+            "item": "minecraft:emerald",
+            "data": 0
+        }
+    },
+    
+    "result": {
+        "item": "recallmirror:recall_mirror",
+        "data": 0,
+        "count": 1
+    }
+}

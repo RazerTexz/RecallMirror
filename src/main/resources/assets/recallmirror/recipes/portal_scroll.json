@@ -1,0 +1,29 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern":
+    [
+        "##G",
+        "##G",
+        "##G"
+    ],
+    "key":
+    {
+        "#":
+        {
+            "item": "minecraft:paper",
+            "data": 0
+        },
+        
+        "G":
+        {
+            "item": "minecraft:dye",
+            "data": 4
+        }
+    },
+    
+    "result": {
+        "item": "recallmirror:portal_scroll",
+        "data": 0,
+        "count": 1
+    }
+}

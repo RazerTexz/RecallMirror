@@ -1,0 +1,12 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "recallmirror:items/nether_recall_mirror"
+    },
+    "overrides": [{
+        "predicate": {
+            "charged": 1
+        },
+        "model": "recallmirror:item/nether_recall_mirror_charged"
+    }]
+}

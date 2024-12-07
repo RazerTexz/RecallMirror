@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shapeless",
+ 
+    "ingredients":
+    [
+ 
+    {
+      "item": "recallmirror:nether_recall_mirror",
+      "data": 0
+    }
+   
+    ],
+ 
+    "result":
+    {
+        "item": "recallmirror:nether_recall_mirror",
+        "count": 1,
+        "data": 0
+    }
+}
