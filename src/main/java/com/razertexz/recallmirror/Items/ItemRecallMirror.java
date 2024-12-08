@@ -16,18 +16,18 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemRecallMirror extends Item {
-	public ItemRecallMirror(String name) {
+public final class ItemRecallMirror extends Item {
+	public ItemRecallMirror(final String name) {
 		setTranslationKey(name).setMaxStackSize(1).setCreativeTab(CreativeTabs.TOOLS);
 		setRegistryName(name);
 	}
 
 	@Override
-    public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag whatisthis) {
+    public final void addInformation(final ItemStack stack, final World world, final List<String> list, final ITooltipFlag whatisthis) {
         list.add("Returns you to your bed / world spawn.");
     }
 	
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    public final ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
         if (player.dimension != 0) {
         	player.changeDimension(0);
         }

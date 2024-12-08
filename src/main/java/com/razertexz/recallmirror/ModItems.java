@@ -12,32 +12,31 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber()
-public class ModItems {
-	static Item portalScroll;
-	static Item recallMirror;
-	static Item netherRecallMirror;
-	static Item netherRecallMirrorCharged;
+public final class ModItems {
+	private static Item portalScroll;
+	private static Item recallMirror;
+	private static Item netherRecallMirror;
 
-	public static void init() {
+	public static final void init() {
 		portalScroll = new ItemPortalScroll("portal_scroll");
 		recallMirror = new ItemRecallMirror("recall_mirror");
 		netherRecallMirror = new ItemNetherRecallMirror("nether_recall_mirror");
 	}
 	
 	@SubscribeEvent
-	public static void registerItems(RegistryEvent.Register<Item> event) {
+	public static final void registerItems(final RegistryEvent.Register<Item> event) {
 		event.getRegistry().registerAll(portalScroll, recallMirror, netherRecallMirror);
 	}
 
 	@SubscribeEvent
-	public static void registerRenders(ModelRegistryEvent event) {
+	public static final void registerRenders(final ModelRegistryEvent event) {
 		registerRender(portalScroll);
 		registerRender(recallMirror);
 		registerRender(netherRecallMirror);
 		ModelLoader.setCustomModelResourceLocation(netherRecallMirror, 0, new ModelResourceLocation(netherRecallMirror.getRegistryName(), "charged"));
 	}
 
-	private static void registerRender(Item item) {
+	private static final void registerRender(final Item item) {
 		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
 	}
 }

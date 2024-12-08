@@ -1,1 +1,2 @@
-# [Original Mod](https://github.com/GodGMN/RecallMirror)
+> [!NOTE]
+> [The Original Mod by GodGMN](https://github.com/GodGMN/RecallMirror)
