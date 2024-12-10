@@ -15,20 +15,20 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
-public class ItemPortalScroll extends Item {
-	public ItemPortalScroll(String name) {
+public final class ItemPortalScroll extends Item {
+	public ItemPortalScroll(final String name) {
 		setTranslationKey(name).setMaxStackSize(40).setCreativeTab(CreativeTabs.TOOLS);
 		setRegistryName(name);
 	}
 
 	@Override
-    public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag whatisthis) {
+    public final void addInformation(final ItemStack stack, final World world, final List<String> list, final ITooltipFlag whatisthis) {
         list.add("Returns you to your bed / world spawn.");
         list.add("NOTE: Single use.");
     }
 
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        ItemStack stack = player.getHeldItem(hand);
+	public final ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+        final ItemStack stack = player.getHeldItem(hand);
 
         if (player.dimension != 0) {
         	player.changeDimension(0);

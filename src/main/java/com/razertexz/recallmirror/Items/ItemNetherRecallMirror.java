@@ -19,14 +19,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.item.IItemPropertyGetter;
 
-public class ItemNetherRecallMirror extends Item {
-	public ItemNetherRecallMirror(String name) {
+public final class ItemNetherRecallMirror extends Item {
+	public ItemNetherRecallMirror(final String name) {
 		setTranslationKey(name).setMaxStackSize(1).setCreativeTab(CreativeTabs.TOOLS);
 		setRegistryName(name);
         addPropertyOverride(new ResourceLocation("charged"), new IItemPropertyGetter() {
 			@Override
-            public float apply(ItemStack stack, World world, EntityLivingBase entity) {
-            	NBTTagCompound tag = stack.getTagCompound();
+            public final float apply(final ItemStack stack, final World world, final EntityLivingBase entity) {
+            	final NBTTagCompound tag = stack.getTagCompound();
             	if (tag == null || !tag.getBoolean("used")) {
             		return 0F;
             	} else {
@@ -37,20 +37,20 @@ public class ItemNetherRecallMirror extends Item {
 	}
 	
 	@Override	
-    public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag whatisthis) {
+    public final void addInformation(final ItemStack stack, final World world, final List<String> list, final ITooltipFlag whatisthis) {
         list.add("An upgraded version of the regular Recall Mirror.");
         list.add("Returns you to your bed / world spawn and back to where you used it.");
     }
 
 	@Override
-	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
+	public final void onCreated(final ItemStack stack, final World world, final EntityPlayer player) {
         stack.setTagCompound(new NBTTagCompound());
 	}
 
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        ItemStack stack = player.getHeldItem(hand);
+    public final ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+        final ItemStack stack = player.getHeldItem(hand);
 
-		NBTTagCompound tag = stack.getTagCompound();
+		final NBTTagCompound tag = stack.getTagCompound();
 
 		if (player.dimension != 0) {
             player.changeDimension(0);
