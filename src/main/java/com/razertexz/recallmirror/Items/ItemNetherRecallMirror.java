@@ -6,7 +6,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,7 +13,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.item.IItemPropertyGetter;
@@ -49,37 +47,28 @@ public final class ItemNetherRecallMirror extends Item {
 
     public final ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
         final ItemStack stack = player.getHeldItem(hand);
-
 		final NBTTagCompound tag = stack.getTagCompound();
 
-		if (player.dimension != 0) {
-            player.changeDimension(0);
-		}
-
+		BlockPos target;
         if (!tag.getBoolean("used")) {
         	tag.setDouble("PosX", player.posX);
             tag.setDouble("PosY", player.posY);
             tag.setDouble("PosZ", player.posZ);
 
-            BlockPos target = player.getBedSpawnLocation(world, player.getBedLocation(0), player.isSpawnForced(0));
+            target = player.getBedSpawnLocation(world, player.getBedLocation(0), player.isSpawnForced(0)).add(0.5, 1, 0.5);
 			if (target == null) {
 	        	target = world.getSpawnPoint();
 	        }
-
-			// 15 secs cooldown
-			player.getCooldownTracker().setCooldown(this, 300);
-
-	        player.setPositionAndUpdate(target.getX() + 0.5, target.getY() + 1, target.getZ() + 0.5);
+			
             tag.setBoolean("used", true);
         } else {
-        	// 30 secs cooldown
-        	player.getCooldownTracker().setCooldown(this, 600);
-
-        	player.setPositionAndUpdate(tag.getDouble("PosX"), tag.getDouble("PosY"), tag.getDouble("PosZ"));
+        	target = new BlockPos(tag.getDouble("PosX"), tag.getDouble("PosY"), tag.getDouble("PosZ"));
         	tag.setBoolean("used", false);
         }
 
-		world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.NEUTRAL, 1F, 1F);
+		// 30 secs cooldown & 5 secs effects duration
+        ItemUtil.teleport(this, target, 600, 60, world, player);
+
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
     }
 }
