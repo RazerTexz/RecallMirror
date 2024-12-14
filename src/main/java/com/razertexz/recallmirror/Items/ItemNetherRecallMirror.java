@@ -6,7 +6,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,7 +14,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.item.IItemPropertyGetter;
@@ -43,43 +42,35 @@ public final class ItemNetherRecallMirror extends Item {
     }
 
 	@Override
-	public final void onCreated(final ItemStack stack, final World world, final EntityPlayer player) {
-        stack.setTagCompound(new NBTTagCompound());
-	}
-
     public final ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
-        final ItemStack stack = player.getHeldItem(hand);
+        if (!world.isRemote) {
+	        final ItemStack stack = player.getHeldItem(hand);
 
-		final NBTTagCompound tag = stack.getTagCompound();
+			NBTTagCompound tag = stack.getTagCompound();
+			if (tag == null) {
+				tag = new NBTTagCompound();
+				stack.setTagCompound(tag);
+			}
 
-		if (player.dimension != 0) {
-            player.changeDimension(0);
-		}
+			BlockPos target = new BlockPos(tag.getDouble("PosX"), tag.getDouble("PosY"), tag.getDouble("PosZ"));;
+	        if (!tag.getBoolean("used")) {
+	        	tag.setDouble("PosX", player.posX);
+	            tag.setDouble("PosY", player.posY);
+	            tag.setDouble("PosZ", player.posZ);
 
-        if (!tag.getBoolean("used")) {
-        	tag.setDouble("PosX", player.posX);
-            tag.setDouble("PosY", player.posY);
-            tag.setDouble("PosZ", player.posZ);
+				target = ItemUtil.getSpawnLocation(world, player);
 
-            BlockPos target = player.getBedSpawnLocation(world, player.getBedLocation(0), player.isSpawnForced(0));
-			if (target == null) {
-	        	target = world.getSpawnPoint();
+	            tag.setBoolean("used", true);
+	        } else {
+	        	tag.setBoolean("used", false);
 	        }
 
-			// 15 secs cooldown
-			player.getCooldownTracker().setCooldown(this, 300);
+			// 30 secs cooldown & 5 secs effects duration
+	        ItemUtil.teleport(this, target, 600, 60, world, player);
 
-	        player.setPositionAndUpdate(target.getX() + 0.5, target.getY() + 1, target.getZ() + 0.5);
-            tag.setBoolean("used", true);
+	        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
         } else {
-        	// 30 secs cooldown
-        	player.getCooldownTracker().setCooldown(this, 600);
-
-        	player.setPositionAndUpdate(tag.getDouble("PosX"), tag.getDouble("PosY"), tag.getDouble("PosZ"));
-        	tag.setBoolean("used", false);
+        	return new ActionResult<ItemStack>(EnumActionResult.PASS, player.getHeldItem(hand));
         }
-
-		world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.NEUTRAL, 1F, 1F);
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
     }
 }

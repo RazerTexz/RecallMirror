@@ -5,14 +5,13 @@ import java.util.List;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
 public final class ItemPortalScroll extends Item {
@@ -27,25 +26,17 @@ public final class ItemPortalScroll extends Item {
         list.add("NOTE: Single use.");
     }
 
+	@Override
 	public final ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
-        final ItemStack stack = player.getHeldItem(hand);
+		if (!world.isRemote) {
+	        // 60 secs cooldown & 5 secs effects duration
+	        ItemUtil.teleport(this, ItemUtil.getSpawnLocation(world, player), 1200, 100, world, player);
 
-        if (player.dimension != 0) {
-        	player.changeDimension(0);
+			final ItemStack stack = player.getHeldItem(hand);
+	        stack.shrink(1);
+	        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+        } else {
+        	return new ActionResult<ItemStack>(EnumActionResult.PASS, player.getHeldItem(hand));
         }
-
-		BlockPos target = player.getBedSpawnLocation(world, player.getBedLocation(0), player.isSpawnForced(0));
-        if (target == null) {
-        	target = world.getSpawnPoint();
-        }
-
-		// 15 secs cooldown
-		player.getCooldownTracker().setCooldown(this, 300);
-
-        player.setPositionAndUpdate(target.getX() + 0.5, target.getY() + 1, target.getZ() + 0.5);
-        world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.NEUTRAL, 1F, 1F);
-        stack.shrink(1);
-
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
     }
 }
