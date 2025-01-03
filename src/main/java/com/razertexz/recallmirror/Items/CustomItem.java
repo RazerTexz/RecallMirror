@@ -50,7 +50,7 @@ public abstract class CustomItem extends Item {
     @Override
     public final void onUsingTick(final ItemStack stack, final EntityLivingBase entityLiving, final int count) {
         if (entityLiving instanceof EntityPlayer) {
-            ((EntityPlayer) entityLiving).sendStatusMessage(new TextComponentString("Hold to charge: " + String.valueOf(count / 20)).setStyle(new Style().setColor(TextFormatting.GREEN)), true);
+            ((EntityPlayer) entityLiving).sendStatusMessage(new TextComponentString("Hold to charge: " + String.format("%.1f", (float) count / 20)).setStyle(new Style().setColor(TextFormatting.GREEN)), true);
         }
     }
 
