@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "recallmirror:items/nether_recall_mirror_charged"
+    }
+}
