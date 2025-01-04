@@ -57,7 +57,7 @@ public abstract class CustomItem extends Item {
     }
 
     protected final void teleportTo(final EntityPlayer player, final World world, final BlockPos targetPos, final int effectsDuration, final int itemCooldown, final int targetDimension) {
-        if (!world.isBlockLoaded(targetPos)) {
+        if (!world.isChunkGeneratedAt(targetPos.getX() >> 4, targetPos.getZ() >> 4)) {
             return;
         }
 
@@ -80,6 +80,6 @@ public abstract class CustomItem extends Item {
 
     protected final BlockPos getSpawnLocation(final EntityPlayer player, final World world) {
         final BlockPos bedLocation = player.getBedLocation(0);
-        return (bedLocation != null && world.isBlockLoaded(bedLocation) && world.getBlockState(bedLocation).getBlock() == Blocks.BED) ? bedLocation.add(0.5, 1.0, 0.5) : world.getSpawnPoint();
+        return (bedLocation != null && world.isChunkGeneratedAt(bedLocation.getX() >> 4, bedLocation.getZ() >> 4) && world.getBlockState(bedLocation).getBlock() == Blocks.BED) ? bedLocation.add(0.5, 1.0, 0.5) : world.getSpawnPoint();
     }
 }
