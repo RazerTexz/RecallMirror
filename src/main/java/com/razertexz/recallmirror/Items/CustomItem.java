@@ -58,6 +58,7 @@ public abstract class CustomItem extends Item {
 
     protected final boolean teleportTo(final EntityPlayer player, final World world, final BlockPos targetPos, final int effectsDuration, final int itemCooldown, final int targetDimension) {
         if (!world.isChunkGeneratedAt(targetPos.getX() >> 4, targetPos.getZ() >> 4)) {
+            player.sendStatusMessage(new TextComponentString("Teleport failed...").setStyle(style), true);
             return false;
         }
 
