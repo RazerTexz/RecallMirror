@@ -52,14 +52,12 @@ public final class ItemNetherRecallMirror extends CustomItem {
                 tag.setInteger("Dimension", player.dimension);
 
                 targetPos = getSpawnLocation(player, world);
-
-                tag.setBoolean("used", true);
-            } else {
-                tag.setBoolean("used", false);
             }
 
             // 3 secs effects duration & 30 secs cooldown
-            teleportTo(player, world, targetPos, 60, 600, tag.getInteger("Dimension"));
+            if (teleportTo(player, world, targetPos, 60, 600, tag.getInteger("Dimension"))) {
+                tag.setBoolean("used", !tag.getBoolean("used"));
+            }
         }
         return stack;
     }

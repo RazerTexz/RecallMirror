@@ -26,9 +26,9 @@ public final class ItemPortalScroll extends CustomItem {
             final EntityPlayer player = (EntityPlayer) entityLiving;
 
             // 5 secs effects duration & 1 min cooldown
-            teleportTo(player, world, getSpawnLocation(player, world), 100, 1200, 0);
-
-            stack.shrink(1);
+            if (teleportTo(player, world, getSpawnLocation(player, world), 100, 1200, 0)) {
+                stack.shrink(1);
+            }
         }
         return stack;
     }

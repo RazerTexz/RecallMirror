@@ -56,9 +56,9 @@ public abstract class CustomItem extends Item {
         }
     }
 
-    protected final void teleportTo(final EntityPlayer player, final World world, final BlockPos targetPos, final int effectsDuration, final int itemCooldown, final int targetDimension) {
+    protected final boolean teleportTo(final EntityPlayer player, final World world, final BlockPos targetPos, final int effectsDuration, final int itemCooldown, final int targetDimension) {
         if (!world.isChunkGeneratedAt(targetPos.getX() >> 4, targetPos.getZ() >> 4)) {
-            return;
+            return false;
         }
 
         if (player.dimension != targetDimension) {
@@ -76,6 +76,8 @@ public abstract class CustomItem extends Item {
         player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE.setPotionName("Broken Armor"), 1200, -4)); // Increase damage taken by 60% for 1 min (formula: 20% x (amplifier + 1))
 
         world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_PORTAL_TRAVEL, SoundCategory.NEUTRAL, 1.0F, 1.0F);
+
+        return true;
     }
 
     protected final BlockPos getSpawnLocation(final EntityPlayer player, final World world) {
