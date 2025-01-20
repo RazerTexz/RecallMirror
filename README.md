@@ -1,2 +1,3 @@
-> [!NOTE]
-> [The Original Mod by GodGMN](https://github.com/GodGMN/RecallMirror)
+# Credits
+- [The Original Mod by GodGMN](https://github.com/GodGMN/RecallMirror)
+- Forge
