@@ -5,7 +5,7 @@ on:
     paths-ignore:
       - '**.md'
       - '.github/**'
-      - '**/LICENSE'
+      - '**LICENSE'
   workflow_dispatch:
 
 jobs:
