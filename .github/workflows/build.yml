@@ -1,11 +1,11 @@
-name: 'Build'
+name: Build
 
 on:
   push:
     paths-ignore:
-      - '**.md'
-      - '.github/**'
-      - '**LICENSE'
+      - "**.md"
+      - "github/**"
+      - "**LICENSE"
   workflow_dispatch:
 
 jobs:
@@ -14,14 +14,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: '2'
 
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '8'
-          distribution: 'temurin'
+          java-version: "8"
+          distribution: "temurin"
           check-latest: true
 
       - name: Setup Gradle
@@ -33,5 +31,5 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: 'upload'
-          path: './build/libs/'
+          name: "upload"
+          path: "build/libs"
